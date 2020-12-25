@@ -123,25 +123,25 @@ public class ChatFrame extends JFrame{
         tempPanel.add(btnPanel, BorderLayout.CENTER);
 
         //字体按钮
-        JButton fontBtn = new JButton(new ImageIcon("images/font.png"));
+        JButton fontBtn = new JButton(new ImageIcon("ChatRoom/images/font.png"));
         fontBtn.setMargin(new Insets(0,0,0,0));
         fontBtn.setToolTipText("设置字体和格式");
         btnPanel.add(fontBtn);
 
         //表情按钮
-        JButton faceBtn = new JButton(new ImageIcon("images/sendFace.png"));
+        JButton faceBtn = new JButton(new ImageIcon("ChatRoom/images/sendFace.png"));
         faceBtn.setMargin(new Insets(0,0,0,0));
         faceBtn.setToolTipText("选择表情");
         btnPanel.add(faceBtn);
 
         //发送文件按钮
-        JButton shakeBtn = new JButton(new ImageIcon("images/shake.png"));
+        JButton shakeBtn = new JButton(new ImageIcon("ChatRoom/images/shake.png"));
         shakeBtn.setMargin(new Insets(0,0,0,0));
         shakeBtn.setToolTipText("向对方发送窗口振动");
         btnPanel.add(shakeBtn);
 
         //发送文件按钮
-        JButton sendFileBtn = new JButton(new ImageIcon("images/sendPic.png"));
+        JButton sendFileBtn = new JButton(new ImageIcon("ChatRoom/images/sendPic.png"));
         sendFileBtn.setMargin(new Insets(0,0,0,0));
         sendFileBtn.setToolTipText("向对方发送文件");
         btnPanel.add(sendFileBtn);
@@ -287,7 +287,7 @@ public class ChatFrame extends JFrame{
         //加载当前用户数据
         if(null != DataBuffer.currentUser){
             currentUserLbl.setIcon(
-                    new ImageIcon("images/" + DataBuffer.currentUser.getHead() + ".png"));
+                    new ImageIcon("ChatRoom/images/" + DataBuffer.currentUser.getHead() + ".png"));
             currentUserLbl.setText(DataBuffer.currentUser.getNickname()
                     + "(" + DataBuffer.currentUser.getId() + ")");
         }
