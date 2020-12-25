@@ -3,6 +3,7 @@ package client.ui;
 import client.DataBuffer;
 import client.model.entity.MyCellRenderer;
 import client.model.entity.OnlineUserListModel;
+import common.model.entity.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,6 +27,15 @@ public class GroupUsersSelectFrame extends JFrame {
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setVisible(true);
     }
+
+    public List getSelectedList() {
+        return groupUserSelectedList;
+    }
+
+    public void setSelectedList(List groupUserSelectedList) {
+        this.groupUserSelectedList = groupUserSelectedList;
+    }
+
 
     public void init(){
         this.setTitle("选择组通信用户");
@@ -73,7 +83,14 @@ public class GroupUsersSelectFrame extends JFrame {
         //确认按钮的事件
         okBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
+//                setSelectedList(onlineList.getSelectedValuesList());
                 groupUserSelectedList = onlineList.getSelectedValuesList();
+                for(int i = 0; i < groupUserSelectedList.size(); i++){
+                    User user = (User) groupUserSelectedList.get(i);
+                    Long id = user.getId();
+                    server.DataBuffer.groupMemberMap.put(id, id);
+                }
+
 //                System.out.println(groupSelectedList);
 
                 //关闭（隐藏）窗口

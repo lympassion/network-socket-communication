@@ -20,7 +20,9 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
  * 〈一句话功能简述〉<br> 
@@ -36,6 +38,8 @@ public class DataBuffer {
     public static User currentUser;
     /** 在线用户列表 */
     public static List<User> onlineUsers;
+    /**组通信用户id保存*/
+    public static Map<Long, Long> groupMemberMap;
     /** 当前客户端连接到服务器的套节字 */
     public static Socket clientSeocket;
     /** 当前客户端连接到服务器的输出流 */
@@ -55,6 +59,7 @@ public class DataBuffer {
 
     static{
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        groupMemberMap = new ConcurrentSkipListMap<Long, Long>();
         //加载服务器配置文件
         configProp = new Properties();
         try {

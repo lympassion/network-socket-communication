@@ -208,6 +208,13 @@ public class RequestProcessor implements Runnable {
         }
     }
 
+    private void loadGroupMembers(){
+        long c1 = 2, c2 = 3, c3 = 4;
+        DataBuffer.groupMemberMap.put(c1, c1);
+        DataBuffer.groupMemberMap.put(c2, c2);
+        DataBuffer.groupMemberMap.put(c3, c3);
+    }
+
     /** 聊天 */
     public void chat(Request request) throws IOException {
         Message msg = (Message)request.getAttribute("msg");
@@ -234,21 +241,33 @@ public class RequestProcessor implements Runnable {
 
              */
         }else{  //群聊:给除了发消息的所有客户端都返回响应
-            groupList = ChatFrame.groupSelectedList;
+            /*
+            groupList = GroupUsersSelectFrame.groupUserSelectedList;
             for(int i = 0; i < groupList.size(); i++){
                 User selectedUser = (User) groupList.get(i);
                 Long id = selectedUser.getId();
                 if(msg.getFromUser().getId() == id){ continue; }
                 sendResponse(DataBuffer.onlineUserIOCacheMap.get(id), response);
             }
+             */
+
+            loadGroupMembers();
+
+            for(Long id : DataBuffer.groupMemberMap.keySet()){
+                if(msg.getFromUser().getId() == id){ continue; }
+                sendResponse(DataBuffer.onlineUserIOCacheMap.get(id), response);
+            }
+
             /*
             for(Long id : DataBuffer.onlineUserIOCacheMap.keySet()){
                 if(msg.getFromUser().getId() == id){	continue; }
-
                 sendResponse(DataBuffer.onlineUserIOCacheMap.get(id), response);
             }
 
              */
+
+
+
         }
     }
 

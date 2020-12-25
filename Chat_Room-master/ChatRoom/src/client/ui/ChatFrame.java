@@ -407,6 +407,8 @@ public class ChatFrame extends JFrame{
                     .append(msg.getFromUser().getNickname())
                     .append("(").append(msg.getFromUser().getId()).append(") ");
             if(this.groupBtn.isSelected()){//群聊
+//                GroupUsersSelectFrame groupUsersSelectFrame = new GroupUsersSelectFrame();
+//                groupSelectedList = groupUsersSelectFrame.getSelectedList();
                 groupSelectedList = GroupUsersSelectFrame.groupUserSelectedList;
                 UserNum = groupSelectedList.size();
                 sb.append("对大家说");
