@@ -411,12 +411,19 @@ public class ChatFrame extends JFrame{
                     .append(msg.getFromUser().getNickname())
                     .append("(").append(msg.getFromUser().getId()).append(") ");
             if(this.groupBtn.isSelected()){//群聊
+<<<<<<< HEAD
 //                final List finalGroupSelectedList = GroupUsersSelectFrame.groupUserSelectedList;
                 if(flag == 1){
                     groupSelectedList = GroupUsersSelectFrame.groupUserSelectedList;
                     flag = 0;
                 }
 
+=======
+//                GroupUsersSelectFrame groupUsersSelectFrame = new GroupUsersSelectFrame();
+//                groupSelectedList = groupUsersSelectFrame.getSelectedList();
+                groupSelectedList = GroupUsersSelectFrame.groupUserSelectedList;
+                UserNum = groupSelectedList.size();
+>>>>>>> e6eb650a4f2dd77bc3c0271e537c27a86605e3d0
                 sb.append("对大家说");
             }
 //            if(GroupUsersSelectFrame.okBtn.isSelected()){//群聊

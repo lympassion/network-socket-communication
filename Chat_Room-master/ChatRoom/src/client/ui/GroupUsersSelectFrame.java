@@ -31,10 +31,18 @@ public class GroupUsersSelectFrame extends JFrame {
     public List getSelectedList() {
         return groupUserSelectedList;
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> e6eb650a4f2dd77bc3c0271e537c27a86605e3d0
     public void setSelectedList(List groupUserSelectedList) {
         this.groupUserSelectedList = groupUserSelectedList;
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> e6eb650a4f2dd77bc3c0271e537c27a86605e3d0
     public void init(){
         this.setTitle("选择组通信用户");
         this.setSize(450, 600);
@@ -81,8 +89,19 @@ public class GroupUsersSelectFrame extends JFrame {
         //确认按钮的事件
         okBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
+<<<<<<< HEAD
                 setSelectedList(onlineList.getSelectedValuesList());
 //                groupUserSelectedList = onlineList.getSelectedValuesList();
+=======
+//                setSelectedList(onlineList.getSelectedValuesList());
+                groupUserSelectedList = onlineList.getSelectedValuesList();
+                for(int i = 0; i < groupUserSelectedList.size(); i++){
+                    User user = (User) groupUserSelectedList.get(i);
+                    Long id = user.getId();
+                    server.DataBuffer.groupMemberMap.put(id, id);
+                }
+
+>>>>>>> e6eb650a4f2dd77bc3c0271e537c27a86605e3d0
 //                System.out.println(groupSelectedList);
 
                 //关闭（隐藏）窗口
