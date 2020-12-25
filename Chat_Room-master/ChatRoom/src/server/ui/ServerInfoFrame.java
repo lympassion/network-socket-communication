@@ -38,6 +38,7 @@ public class ServerInfoFrame extends JFrame {
     }
 
     public void init() {  //初始化窗体
+        JPopupMenu pop = getTablePop();
         this.setTitle("服务器");//设置服务器启动标题
         this.setBounds((DataBuffer.screenSize.width - 700)/2,
                 (DataBuffer.screenSize.height - 475)/2, 700, 475);
@@ -82,7 +83,7 @@ public class ServerInfoFrame extends JFrame {
         registedUserTable = new JTable(DataBuffer.registedUserTableModel);
 
         // 取得表格上的弹出菜单对象,加到表格上
-        JPopupMenu pop = getTablePop();
+//        JPopupMenu pop = getTablePop();
         onlineUserTable.setComponentPopupMenu(pop);
 
         //选项卡
@@ -147,52 +148,53 @@ public class ServerInfoFrame extends JFrame {
     // 处理弹出菜单上的事件
     private void popMenuAction(String command) {
         // 得到在表格上选中的行
-        final int selectIndex = onlineUserTable.getSelectedRow();
-        String usr_id = (String)onlineUserTable.getValueAt(selectIndex,0);
-        System.out.println(usr_id);
-        if (selectIndex == -1) {
-            JOptionPane.showMessageDialog(this, "请选中一个用户");
-            return;
-        }
-
-        if (command.equals("del")) {
-            // 从线程中移除处理线程对象
-            try {
-                RequestProcessor.remove(DataBuffer.onlineUsersMap.get(Long.valueOf(usr_id)));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else if (command.equals("send")) {
-            final JDialog jd = new JDialog(this, true);// 发送对话框
-            jd.setLayout(new FlowLayout());
-//			jd.setTitle("您将对" + user.getNickname() + "发信息");
-            jd.setSize(200, 100);
-            final JTextField jtd_m = new JTextField(20);
-            JButton jb = new JButton("发送!");
-            jd.add(jtd_m);
-            jd.add(jb);
-            // 发送按钮的事件实现
-            jb.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    System.out.println("发送了一条消息啊...");
-                    String msg = jtd_m.getText();
-//					ChatTools.sendMsg2One(selectIndex, msg);
-                    try {
-//                        System.out.println(DataBuffer.onlineUsersMap.get((long) onlineUserTable.get));
-                        RequestProcessor.chat_sys(msg,DataBuffer.onlineUsersMap.get(Long.valueOf(usr_id)));
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
-                    jtd_m.setText("");// 清空输入框
-                    jd.dispose();
-                }
-            });
-            jd.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(this, "未知菜单:" + command);
-        }
-        // 刷新表格
-        SwingUtilities.updateComponentTreeUI(onlineUserTable);
+//        final int selectIndex = onlineUserTable.getSelectedRow();
+//        String usr_id = (String)onlineUserTable.getValueAt(selectIndex,0);
+//        System.out.println(usr_id);
+//        if (selectIndex == -1) {
+//            JOptionPane.showMessageDialog(this, "请选中一个用户");
+//            return;
+//        }
+//
+//        if (command.equals("del")) {
+//            // 从线程中移除处理线程对象
+//            try {
+//                RequestProcessor.remove(DataBuffer.onlineUsersMap.get(Long.valueOf(usr_id)));
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        } else if (command.equals("send")) {
+//            final JDialog jd = new JDialog(this, true);// 发送对话框
+//            jd.setLayout(new FlowLayout());
+////			jd.setTitle("您将对" + user.getNickname() + "发信息");
+//            jd.setSize(200, 100);
+//            final JTextField jtd_m = new JTextField(20);
+//            JButton jb = new JButton("发送!");
+//            jd.add(jtd_m);
+//            jd.add(jb);
+//            // 发送按钮的事件实现
+//            jb.addActionListener(new ActionListener() {
+//                public void actionPerformed(ActionEvent e) {
+//                    System.out.println("发送了一条消息啊...");
+//                    String msg = jtd_m.getText();
+////					ChatTools.sendMsg2One(selectIndex, msg);
+//                    try {
+////                        System.out.println(DataBuffer.onlineUsersMap.get((long) onlineUserTable.get));
+//                        RequestProcessor.chat_sys(msg,DataBuffer.onlineUsersMap.get(Long.valueOf(usr_id)));
+//                    } catch (IOException e1) {
+//                        e1.printStackTrace();
+//                    }
+//                    jtd_m.setText("");// 清空输入框
+//                    jd.dispose();
+//                }
+//            });
+//            jd.setVisible(true);
+//        } else {
+//            JOptionPane.showMessageDialog(this, "未知菜单:" + command);
+//        }
+//        // 刷新表格
+//        SwingUtilities.updateComponentTreeUI(onlineUserTable);
+        return;
     }
 
     // 按下发送服务器消息的按钮，给所有在线用户发送消息

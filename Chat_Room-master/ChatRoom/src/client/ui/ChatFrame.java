@@ -1,13 +1,3 @@
-/**
- * Copyright (C), 2015-2019, XXX有限公司
- * FileName: CharFrame
- * Author:   ITryagain
- * Date:     2019/5/16 20:21
- * Description:
- * History:
- * <author>          <time>          <version>          <desc>
- * 作者姓名           修改时间           版本号              描述
- */
 package client.ui;
 
 import client.ClientThread;
@@ -20,6 +10,7 @@ import common.model.entity.FileInfo;
 import common.model.entity.Message;
 import common.model.entity.Request;
 import common.model.entity.User;
+import server.controller.RequestProcessor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,13 +25,16 @@ import java.util.Date;
  * 〈一句话功能简述〉<br> 
  * 〈〉
  *
- * @author ITryagain
- * @create 2019/5/16
- * @since 1.0.0
  */
 
 public class ChatFrame extends JFrame{
     private static final long serialVersionUID = -2310785591507878535L;
+
+    /**记录组通信人数*/
+    private static int groupChatnum = 0;
+    /**记录组通信昵称*/
+    private static String nickname = "";
+
     /**聊天对方的信息Label*/
     private JLabel otherInfoLbl;
     /** 当前用户信息Lbl */
@@ -50,7 +44,8 @@ public class ChatFrame extends JFrame{
     /**要发送的信息区域*/
     public static JTextArea sendArea;
     /** 在线用户列表 */
-    public static JList onlineList;
+//    public static JList onlineList;
+    public JList onlineList;
     /** 在线用户数统计Lbl */
     public static JLabel onlineCountLbl;
     /** 准备发送的文件 */
@@ -59,6 +54,9 @@ public class ChatFrame extends JFrame{
     /** 私聊复选框 */
     public JCheckBox rybqBtn;
 
+    /** 组通信复选框 */
+    public JCheckBox rybqBtnGroup;
+
     public ChatFrame(){
         this.init();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -66,6 +64,8 @@ public class ChatFrame extends JFrame{
     }
 
     public void init(){
+
+
         this.setTitle("JQ聊天室");
         this.setSize(550, 500);
         this.setResizable(false);
@@ -134,7 +134,7 @@ public class ChatFrame extends JFrame{
         faceBtn.setToolTipText("选择表情");
         btnPanel.add(faceBtn);
 
-        //发送文件按钮
+        //发送窗口振动按钮
         JButton shakeBtn = new JButton(new ImageIcon("ChatRoom/images/shake.png"));
         shakeBtn.setMargin(new Insets(0,0,0,0));
         shakeBtn.setToolTipText("向对方发送窗口振动");
@@ -149,6 +149,10 @@ public class ChatFrame extends JFrame{
         //私聊按钮
         rybqBtn = new JCheckBox("私聊");
         tempPanel.add(rybqBtn, BorderLayout.EAST);
+
+        // 实现组通信
+        rybqBtnGroup = new JCheckBox("组通信");
+        tempPanel.add(rybqBtnGroup, BorderLayout.WEST);
 
         //要发送的信息的区域
         sendArea = new JTextArea();
@@ -192,11 +196,17 @@ public class ChatFrame extends JFrame{
         //在线用户列表
         onlineList = new JList(DataBuffer.onlineUserListModel);
         onlineList.setCellRenderer(new MyCellRenderer());
+
+        // 取得弹出菜单对象,好友列表中
+        JPopupMenu pop = getTablePop();
+        onlineList.setComponentPopupMenu(pop);
         //设置为单选模式
-        onlineList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+//        onlineList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         onlineListPane.add(new JScrollPane(onlineList,
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
+
+
 
         //当前用户信息Label
         currentUserLbl = new JLabel();
@@ -228,6 +238,25 @@ public class ChatFrame extends JFrame{
                         otherInfoLbl.setText("当前状态：想自言自语?...系统不允许");
                     }else{
                         otherInfoLbl.setText("当前状态：与 "+ selectedUser.getNickname()
+                                +"(" + selectedUser.getId() + ") 私中...");
+                    }
+                }else{
+                    otherInfoLbl.setText("当前状态：群聊...");
+                }
+            }
+        });
+
+        //选择至少两个用户进行组通信
+        rybqBtnGroup.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                if(rybqBtnGroup.isSelected()){
+                    User selectedUser = (User)onlineList.getSelectedValue();
+                    if(null == selectedUser){
+                        otherInfoLbl.setText("当前状态：私聊(选中在线用户列表中某个用户进行私聊)...");
+                    }else if(DataBuffer.currentUser.getId() == selectedUser.getId()){
+                        otherInfoLbl.setText("当前状态：想自言自语?...系统不允许");
+                    }else{
+                        otherInfoLbl.setText("当前状态：与 "+ selectedUser.getNickname()
                                 +"(" + selectedUser.getId() + ") 私聊中...");
                     }
                 }else{
@@ -246,6 +275,26 @@ public class ChatFrame extends JFrame{
                     }else{
                         otherInfoLbl.setText("当前状态：与 "+ selectedUser.getNickname()
                                 +"(" + selectedUser.getId() + ") 私聊中...");
+                    }
+                }
+            }
+        });
+
+        //选择至少两个用户
+        onlineList.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                User selectedUser = (User)onlineList.getSelectedValue();
+                if(rybqBtnGroup.isSelected()){
+                    if(DataBuffer.currentUser.getId() == selectedUser.getId()){
+                        otherInfoLbl.setText("当前状态：想自言自语?...系统不允许");
+                    }else{
+                        groupChatnum += 1;
+                        nickname += (groupChatnum > 1) ? "、" : "";
+                        nickname += selectedUser.getNickname();
+                        if(groupChatnum >= 2){
+                            otherInfoLbl.setText("当前状态：与 "+ nickname
+                                    + "组通信中...");
+                        }
                     }
                 }
             }
@@ -280,6 +329,125 @@ public class ChatFrame extends JFrame{
         });
 
         this.loadData();  //加载初始数据
+    }
+
+    /* * 创建在线列表中的弹出菜单对象，实现私聊功能 */
+    private JPopupMenu getTablePop() {
+        JPopupMenu pop = new JPopupMenu();// 弹出菜单对象
+        JMenuItem mi_send = new JMenuItem("私聊");
+        // 菜单项对象
+        mi_send.setActionCommand("chat");// 设定菜单命令关键字
+        JMenuItem mi_del = new JMenuItem("组通信");// 菜单项对象
+        mi_del.setActionCommand("group_chat");// 设定菜单命令关键字
+        // 弹出菜单上的事件监听器对象
+        ActionListener al = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String s = e.getActionCommand();
+                // 哪个菜单项点击了，这个s就是其设定的ActionCommand
+                popMenuAction(s);
+            }
+        };
+        mi_send.addActionListener(al);
+        mi_del.addActionListener(al);// 给菜单加上监听器
+        pop.add(mi_send);
+        pop.add(mi_del);
+        return pop;
+    }
+
+    // 处理弹出菜单上的事件
+    private void popMenuAction(String command) {
+        //选择某个用户
+        onlineList.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                User selectedUser = (User)onlineList.getSelectedValue();
+                if(rybqBtn.isSelected()){
+                    if(DataBuffer.currentUser.getId() == selectedUser.getId()){
+                        otherInfoLbl.setText("当前状态：想自言自语?...系统不允许");
+                    }else{
+                        otherInfoLbl.setText("当前状态：与 "+ selectedUser.getNickname()
+                                +"(" + selectedUser.getId() + ") 私聊中...");
+                    }
+                }
+            }
+        });
+//        // 得到在表格上选中的行
+//        final int selectIndex = onlineUserTable.getSelectedRow();
+//        String usr_id = (String)onlineUserTable.getValueAt(selectIndex,0);
+//        System.out.println(usr_id);
+
+        User selectedUser = (User)onlineList.getSelectedValue();
+        long usr_id = selectedUser.getId();
+//        String usr_id = (String)onlineList.getValueAt(selectIndex,0);
+//        System.out.println(usr_id);
+//        if (selectIndex == -1) {
+//            JOptionPane.showMessageDialog(this, "请选中一个用户");
+//            return;
+//        }
+
+        if (command.equals("chat")) {
+            sendTxtMsg();
+//            submitBtn.addActionListener(new ActionListener() {
+//                public void actionPerformed(ActionEvent event) {
+//                    sendTxtMsg();
+//                }
+//            });
+
+//            final JDialog jd_chat = new JDialog(this, true);// 发送对话框
+//            jd_chat.setLayout(new FlowLayout());
+//			jd_chat.setTitle("您将对" + selectedUser.getNickname() + "发信息");
+//            jd_chat.setSize(200, 100);
+//            final JTextField jtd_m = new JTextField(20);
+//            JButton jb = new JButton("发送!");
+//            jd_chat.add(jtd_m);
+//            jd_chat.add(jb);
+//            // 发送按钮的事件实现
+//            jb.addActionListener(new ActionListener() {
+//                public void actionPerformed(ActionEvent e) {
+//                    System.out.println("发送了一条消息啊...");
+//                    String msg = jtd_m.getText();
+////					ChatTools.sendMsg2One(selectIndex, msg);
+//                    try {
+////                        System.out.println(DataBuffer.onlineUsersMap.get((long) onlineUserTable.get));
+//                        RequestProcessor.chat_sys(msg, server.DataBuffer.onlineUsersMap.get(Long.valueOf(usr_id)));
+//                    } catch (IOException e1) {
+//                        e1.printStackTrace();
+//                    }
+//                    jtd_m.setText("");// 清空输入框
+//                    jd_chat.dispose();
+//                }
+//            });
+//            jd_chat.setVisible(true);
+        } else if (command.equals("group_chat")) {
+            final JDialog jd = new JDialog(this, true);// 发送对话框
+            jd.setLayout(new FlowLayout());
+//			jd.setTitle("您将对" + user.getNickname() + "发信息");
+            jd.setSize(200, 100);
+            final JTextField jtd_m = new JTextField(20);
+            JButton jb = new JButton("发送!");
+            jd.add(jtd_m);
+            jd.add(jb);
+            // 发送按钮的事件实现
+            jb.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("发送了一条消息啊...");
+                    String msg = jtd_m.getText();
+//					ChatTools.sendMsg2One(selectIndex, msg);
+                    try {
+//                        System.out.println(DataBuffer.onlineUsersMap.get((long) onlineUserTable.get));
+                        RequestProcessor.chat_sys(msg, server.DataBuffer.onlineUsersMap.get(Long.valueOf(usr_id)));
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                    jtd_m.setText("");// 清空输入框
+                    jd.dispose();
+                }
+            });
+            jd.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "未知菜单:" + command);
+        }
+        // 刷新表格
+        SwingUtilities.updateComponentTreeUI(onlineList);
     }
 
     /**  加载数据 */
