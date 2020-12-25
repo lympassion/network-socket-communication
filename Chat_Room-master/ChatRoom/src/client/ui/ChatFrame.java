@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 〈一句话功能简述〉<br> 
@@ -51,6 +52,8 @@ public class ChatFrame extends JFrame{
     public static JTextArea sendArea;
     /** 在线用户列表 */
     public static JList onlineList;
+    /**组通信列表*/
+    public static List groupSelectedList;
     /** 在线用户数统计Lbl */
     public static JLabel onlineCountLbl;
     /** 准备发送的文件 */
@@ -58,6 +61,18 @@ public class ChatFrame extends JFrame{
 
     /** 私聊复选框 */
     public JCheckBox rybqBtn;
+
+    /** 组通信复选框 */
+    public JCheckBox groupBtn;
+//    public JButton groupBtn;
+
+    /*
+    /**组通信选人确认按钮*/
+    private JButton okBtn;
+
+    /**消息接收用户基数*/
+    public static int UserNum = 2;
+
 
     public ChatFrame(){
         this.init();
@@ -146,9 +161,17 @@ public class ChatFrame extends JFrame{
         sendFileBtn.setToolTipText("向对方发送文件");
         btnPanel.add(sendFileBtn);
 
+/*
         //私聊按钮
         rybqBtn = new JCheckBox("私聊");
         tempPanel.add(rybqBtn, BorderLayout.EAST);
+
+ */
+
+        //组通信按钮
+        groupBtn = new JCheckBox("组通信");
+//        groupBtn = new JButton("组通信");
+        tempPanel.add(groupBtn, BorderLayout.EAST);
 
         //要发送的信息的区域
         sendArea = new JTextArea();
@@ -217,6 +240,7 @@ public class ChatFrame extends JFrame{
             }
         });
 
+        /*
         //选择某个用户私聊
         rybqBtn.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
@@ -248,6 +272,16 @@ public class ChatFrame extends JFrame{
                                 +"(" + selectedUser.getId() + ") 私聊中...");
                     }
                 }
+            }
+        });
+
+         */
+
+        groupBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new GroupUsersSelectFrame();
+
             }
         });
 
@@ -345,15 +379,10 @@ public class ChatFrame extends JFrame{
                     "不能发送", JOptionPane.ERROR_MESSAGE);
         } else { //发送
             User selectedUser = (User)onlineList.getSelectedValue();
-//			if(null != selectedUser &&
-//					DataBuffer.currentUser.getId() == selectedUser.getId()){
-//				JOptionPane.showMessageDialog(ChatFrame.this, "不能给自己发送消息!",
-//						"不能发送", JOptionPane.ERROR_MESSAGE);
-//				return;
-//			}
 
             //如果设置了ToUser表示私聊，否则群聊
             Message msg = new Message();
+            /*
             if(rybqBtn.isSelected()){  //私聊
                 if(null == selectedUser){
                     JOptionPane.showMessageDialog(ChatFrame.this, "没有选择私聊对象!",
@@ -367,6 +396,8 @@ public class ChatFrame extends JFrame{
                     msg.setToUser(selectedUser);
                 }
             }
+
+             */
             msg.setFromUser(DataBuffer.currentUser);
             msg.setSendTime(new Date());
 
@@ -375,14 +406,9 @@ public class ChatFrame extends JFrame{
             sb.append(" ").append(df.format(msg.getSendTime())).append(" ")
                     .append(msg.getFromUser().getNickname())
                     .append("(").append(msg.getFromUser().getId()).append(") ");
-            if(!this.rybqBtn.isSelected()){//群聊
-//				if(null == selectedUser){
-//					sb.append("对大家说");
-//				}else{
-//					sb.append("对").append(selectedUser.getNickname())
-//						.append("(").append(selectedUser.getId()).append(")")
-//						.append("说");
-//				}
+            if(this.groupBtn.isSelected()){//群聊
+                groupSelectedList = GroupUsersSelectFrame.groupUserSelectedList;
+                UserNum = groupSelectedList.size();
                 sb.append("对大家说");
             }
             sb.append("\n  ").append(content).append("\n");

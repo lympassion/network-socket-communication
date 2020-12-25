@@ -1,3 +1,13 @@
+/**
+ * Copyright (C), 2015-2019, XXX有限公司
+ * FileName: ServerInfoFrame
+ * Author:   ITryagain
+ * Date:     2019/5/15 18:30
+ * Description: 服务器信息窗体
+ * History:
+ * <author>          <time>          <version>          <desc>
+ * 作者姓名           修改时间           版本号              描述
+ */
 package server.ui;
 
 import common.model.entity.User;
@@ -22,7 +32,12 @@ import java.util.List;
 import java.util.TimerTask;
 
 /**
+ * 〈一句话功能简述〉<br>
  * 〈服务器信息窗体〉
+ *
+ * @author ITryagain
+ * @create 2019/5/15
+ * @since 1.0.0
  */
 
 public class ServerInfoFrame extends JFrame {
@@ -38,7 +53,7 @@ public class ServerInfoFrame extends JFrame {
     }
 
     public void init() {  //初始化窗体
-        this.setTitle("服务器");//设置服务器启动标题
+        this.setTitle("服务器启动");//设置服务器启动标题
         this.setBounds((DataBuffer.screenSize.width - 700)/2,
                 (DataBuffer.screenSize.height - 475)/2, 700, 475);
         this.setLayout(new BorderLayout());

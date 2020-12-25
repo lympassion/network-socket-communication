@@ -1,3 +1,13 @@
+/**
+ * Copyright (C), 2015-2019, XXX有限公司
+ * FileName: MainServer
+ * Author:   ITryagain
+ * Date:     2019/5/15 17:07
+ * Description:
+ * History:
+ * <author>          <time>          <version>          <desc>
+ * 作者姓名           修改时间           版本号              描述
+ */
 package server;
 
 import server.controller.RequestProcessor;
@@ -9,7 +19,12 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * 服务器端的操作：监听用户连接，创建新线程( -> RequestProcessor )处理请求
+ * 〈一句话功能简述〉<br> 
+ * 〈〉
+ *
+ * @author ITryagain
+ * @create 2019/5/15
+ * @since 1.0.0
  */
 
 public class MainServer {

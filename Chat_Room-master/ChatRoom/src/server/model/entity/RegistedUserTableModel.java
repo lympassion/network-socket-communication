@@ -1,3 +1,13 @@
+/**
+ * Copyright (C), 2015-2019, XXX有限公司
+ * FileName: RegistedUserTableModel
+ * Author:   ITryagain
+ * Date:     2019/5/15 18:07
+ * Description:
+ * History:
+ * <author>          <time>          <version>          <desc>
+ * 作者姓名           修改时间           版本号              描述
+ */
 package server.model.entity;
 
 import javax.swing.table.AbstractTableModel;
@@ -5,7 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 〈已注册用户列表模型〉
+ * 〈已注册用户列表模型〉<br>
+ * 〈〉
+ *
+ * @author ITryagain
+ * @create 2019/5/15
+ * @since 1.0.0
  */
 
 public class RegistedUserTableModel extends AbstractTableModel {

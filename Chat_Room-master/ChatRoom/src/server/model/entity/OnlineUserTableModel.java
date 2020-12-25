@@ -15,7 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 在线用户列表模型
+ * 〈一句话功能简述〉<br> 
+ * 〈〉
+ *
+ * @author ITryagain
+ * @create 2019/5/15
+ * @since 1.0.0
  */
 
 public class OnlineUserTableModel extends AbstractTableModel {

@@ -1,3 +1,13 @@
+/**
+ * Copyright (C), 2015-2019, XXX有限公司
+ * FileName: UserService
+ * Author:   ITryagain
+ * Date:     2019/5/15 18:34
+ * Description:
+ * History:
+ * <author>          <time>          <version>          <desc>
+ * 作者姓名           修改时间           版本号              描述
+ */
 package server.model.service;
 
 import common.model.entity.User;
@@ -12,7 +22,12 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * 跟用户有关的操作：初始化生成用户，登录，加载用户列表，保存用户列表，新增用户
+ * 〈一句话功能简述〉<br> 
+ * 〈〉
+ *
+ * @author ITryagain
+ * @create 2019/5/15
+ * @since 1.0.0
  */
 
 public class UserService {
@@ -52,6 +67,7 @@ public class UserService {
         return result;
     }
 
+
     /** 加载所有用户 */
     @SuppressWarnings("unchecked")
     public List<User> loadAllUser() {
@@ -87,6 +103,8 @@ public class UserService {
         }
     }
 
+
+
     /** 初始化几个测试用户 */
     public void initUser(){
         User user = new User("admin", "Admin", 'm', 0);
@@ -98,11 +116,12 @@ public class UserService {
         User user3 = new User("123", "anni", 'f', 2);
         user3.setId(3);
 
-        User user4 = new User("123", "mang", 'f', 3);
+        User user4 = new User("123", "liu", 'f', 3);
         user4.setId(4);
 
-        User user5 = new User("123", "liu", 'f', 4);
-        user5.setId(4);
+        User user5 = new User("123", "mang", 'f', 2);
+        user5.setId(5);
+
 
         List<User> users = new CopyOnWriteArrayList<User>();
         users.add(user);

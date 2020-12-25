@@ -1,5 +1,17 @@
+/**
+ * Copyright (C), 2015-2019, XXX有限公司
+ * FileName: RequestProcessor
+ * Author:   ITryagain
+ * Date:     2019/5/15 18:50
+ * Description:
+ * History:
+ * <author>          <time>          <version>          <desc>
+ * 作者姓名           修改时间           版本号              描述
+ */
 package server.controller;
 
+import client.ui.ChatFrame;
+import client.ui.GroupUsersSelectFrame;
 import common.model.entity.*;
 import server.DataBuffer;
 import server.OnlineClientIOCache;
@@ -11,11 +23,18 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * 被MainServer调用，处理客户端的请求
+ * 〈一句话功能简述〉<br>
+ * 〈〉
+ *
+ * @author ITryagain
+ * @create 2019/5/15
+ * @since 1.0.0
  */
 
 public class RequestProcessor implements Runnable {
@@ -24,6 +43,9 @@ public class RequestProcessor implements Runnable {
     public RequestProcessor(Socket currentClientSocket){
         this.currentClientSocket = currentClientSocket;
     }
+
+    /**组通信列表*/
+    public static List groupList;
 
     public void run() {
         boolean flag = true; //是否不间断监听
@@ -194,14 +216,39 @@ public class RequestProcessor implements Runnable {
         response.setType(ResponseType.CHAT);
         response.setData("txtMsg", msg);
 
-        if(msg.getToUser() != null){ //私聊:只给私聊的对象返回响应
+        if(msg.getToUser() != null){
             OnlineClientIOCache io = DataBuffer.onlineUserIOCacheMap.get(msg.getToUser().getId());
             sendResponse(io, response);
+            /*
+            if(ChatFrame.UserNum == 2){
+                OnlineClientIOCache io = DataBuffer.onlineUserIOCacheMap.get(msg.getToUser().getId());
+                sendResponse(io, response);
+            } else {
+                for(int i = 0; i < ChatFrame.groupSelectedList.size(); i++){
+                    User selectedUser = (User) ChatFrame.groupSelectedList.get(i);
+                    Long id = selectedUser.getId();
+                    if(msg.getFromUser().getId() == id){ continue; }
+                    sendResponse(DataBuffer.onlineUserIOCacheMap.get(id), response);
+                }
+            }
+
+             */
         }else{  //群聊:给除了发消息的所有客户端都返回响应
-            for(Long id : DataBuffer.onlineUserIOCacheMap.keySet()){
-                if(msg.getFromUser().getId() == id ){	continue; }
+            groupList = ChatFrame.groupSelectedList;
+            for(int i = 0; i < groupList.size(); i++){
+                User selectedUser = (User) groupList.get(i);
+                Long id = selectedUser.getId();
+                if(msg.getFromUser().getId() == id){ continue; }
                 sendResponse(DataBuffer.onlineUserIOCacheMap.get(id), response);
             }
+            /*
+            for(Long id : DataBuffer.onlineUserIOCacheMap.keySet()){
+                if(msg.getFromUser().getId() == id){	continue; }
+
+                sendResponse(DataBuffer.onlineUserIOCacheMap.get(id), response);
+            }
+
+             */
         }
     }
 

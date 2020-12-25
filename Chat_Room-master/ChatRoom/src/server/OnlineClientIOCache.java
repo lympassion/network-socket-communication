@@ -14,7 +14,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 /**
+ * 〈一句话功能简述〉<br> 
  * 〈在线客户端的IO流缓存类〉
+ *
+ * @author ITryagain
+ * @create 2019/5/15
+ * @since 1.0.0
  */
 
 public class OnlineClientIOCache {
@@ -27,7 +32,7 @@ public class OnlineClientIOCache {
         this.oos = oos;
     }
 
-    public ObjectOutputStream getOos() {
+    public ObjectOutputStream getOos(){
         return oos;
     }
 

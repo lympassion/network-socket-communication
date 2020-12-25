@@ -1,3 +1,13 @@
+/**
+ * Copyright (C), 2015-2019, XXX有限公司
+ * FileName: Request
+ * Author:   ITryagain
+ * Date:     2019/5/15 18:55
+ * Description:
+ * History:
+ * <author>          <time>          <version>          <desc>
+ * 作者姓名           修改时间           版本号              描述
+ */
 package common.model.entity;
 
 import java.io.Serializable;
@@ -5,7 +15,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 〈请求对象〉
+ * 〈请求对象〉<br>
+ * 〈〉
+ *
+ * @author ITryagain
+ * @create 2019/5/15
+ * @since 1.0.0
  */
 
 public class Request implements Serializable {
