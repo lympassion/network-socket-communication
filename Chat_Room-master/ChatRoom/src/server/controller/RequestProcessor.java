@@ -241,14 +241,13 @@ public class RequestProcessor implements Runnable {
                 if(msg.getFromUser().getId() == id){ continue; }
                 sendResponse(DataBuffer.onlineUserIOCacheMap.get(id), response);
             }
-            /*
-            for(Long id : DataBuffer.onlineUserIOCacheMap.keySet()){
-                if(msg.getFromUser().getId() == id){	continue; }
 
-                sendResponse(DataBuffer.onlineUserIOCacheMap.get(id), response);
-            }
+//            for(Long id : DataBuffer.onlineUserIOCacheMap.keySet()){
+//                if(msg.getFromUser().getId() == id){	continue; }
+//
+//                sendResponse(DataBuffer.onlineUserIOCacheMap.get(id), response);
+//            }
 
-             */
         }
     }
 

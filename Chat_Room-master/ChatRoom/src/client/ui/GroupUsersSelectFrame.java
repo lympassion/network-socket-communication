@@ -3,6 +3,7 @@ package client.ui;
 import client.DataBuffer;
 import client.model.entity.MyCellRenderer;
 import client.model.entity.OnlineUserListModel;
+import common.model.entity.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,12 +20,19 @@ public class GroupUsersSelectFrame extends JFrame {
     public static List groupUserSelectedList;
 
     /**确认按钮*/
-    private JButton okBtn;
+    public static JButton okBtn;
 
     public GroupUsersSelectFrame(){
         this.init();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setVisible(true);
+    }
+
+    public List getSelectedList() {
+        return groupUserSelectedList;
+    }
+    public void setSelectedList(List groupUserSelectedList) {
+        this.groupUserSelectedList = groupUserSelectedList;
     }
 
     public void init(){
@@ -73,7 +81,8 @@ public class GroupUsersSelectFrame extends JFrame {
         //确认按钮的事件
         okBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-                groupUserSelectedList = onlineList.getSelectedValuesList();
+                setSelectedList(onlineList.getSelectedValuesList());
+//                groupUserSelectedList = onlineList.getSelectedValuesList();
 //                System.out.println(groupSelectedList);
 
                 //关闭（隐藏）窗口

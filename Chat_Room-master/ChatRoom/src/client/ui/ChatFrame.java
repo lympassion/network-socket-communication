@@ -54,6 +54,8 @@ public class ChatFrame extends JFrame{
     public static JList onlineList;
     /**组通信列表*/
     public static List groupSelectedList;
+    /**组通信列表flag*/
+    public static int flag = 1;
     /** 在线用户数统计Lbl */
     public static JLabel onlineCountLbl;
     /** 准备发送的文件 */
@@ -398,6 +400,8 @@ public class ChatFrame extends JFrame{
             }
 
              */
+            msg.setToUser(selectedUser);
+
             msg.setFromUser(DataBuffer.currentUser);
             msg.setSendTime(new Date());
 
@@ -407,10 +411,23 @@ public class ChatFrame extends JFrame{
                     .append(msg.getFromUser().getNickname())
                     .append("(").append(msg.getFromUser().getId()).append(") ");
             if(this.groupBtn.isSelected()){//群聊
-                groupSelectedList = GroupUsersSelectFrame.groupUserSelectedList;
-                UserNum = groupSelectedList.size();
+//                final List finalGroupSelectedList = GroupUsersSelectFrame.groupUserSelectedList;
+                if(flag == 1){
+                    groupSelectedList = GroupUsersSelectFrame.groupUserSelectedList;
+                    flag = 0;
+                }
+
                 sb.append("对大家说");
             }
+//            if(GroupUsersSelectFrame.okBtn.isSelected()){//群聊
+////                final List finalGroupSelectedList = GroupUsersSelectFrame.groupUserSelectedList;
+//                if(flag == 1){
+//                    groupSelectedList = GroupUsersSelectFrame.groupUserSelectedList;
+//                    flag = 0;
+//                }
+//
+//                sb.append("对大家说");
+//            }
             sb.append("\n  ").append(content).append("\n");
             msg.setMessage(sb.toString());
 
