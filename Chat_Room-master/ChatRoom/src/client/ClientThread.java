@@ -173,7 +173,6 @@ public class ClientThread extends Thread {
                 ClientUtil.appendTxt2MsgListArea("【文件消息】您已拒绝接收来自 "
                         + fromName +" 的文件!\n");
             }
-
             ClientUtil.sendTextRequest2(request);
         } catch (IOException e) {
             e.printStackTrace();

@@ -42,7 +42,6 @@ public class Message implements Serializable {
     public void setMessage(String message) {
         this.message = message;
     }
-
     public Date getSendTime() {
         return sendTime;
     }

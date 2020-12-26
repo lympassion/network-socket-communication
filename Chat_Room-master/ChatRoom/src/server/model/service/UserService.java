@@ -1,13 +1,3 @@
-/**
- * Copyright (C), 2015-2019, XXX有限公司
- * FileName: UserService
- * Author:   ITryagain
- * Date:     2019/5/15 18:34
- * Description:
- * History:
- * <author>          <time>          <version>          <desc>
- * 作者姓名           修改时间           版本号              描述
- */
 package server.model.service;
 
 import common.model.entity.User;
@@ -20,15 +10,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-/**
- * 〈一句话功能简述〉<br> 
- * 〈〉
- *
- * @author ITryagain
- * @create 2019/5/15
- * @since 1.0.0
- */
 
 public class UserService {
     private static int idCount = 3; //id
@@ -101,7 +82,6 @@ public class UserService {
             IOUtil.close(oos);
         }
     }
-
 
 
     /** 初始化几个测试用户 */

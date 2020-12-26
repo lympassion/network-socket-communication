@@ -22,7 +22,6 @@ public class Response implements Serializable {
         this.dataMap = new HashMap<String, Object>();
     }
 
-
     public ResponseStatus getStatus() {
         return status;
     }

@@ -76,8 +76,6 @@ public class GroupUsersSelectFrame extends JFrame {
             public void actionPerformed(ActionEvent event) {
                 groupUserSelectedList = onlineList.getSelectedValuesList();
 
-//                System.out.println(groupSelectedList);
-
                 //关闭（隐藏）窗口
                 setVisible(false);
             }

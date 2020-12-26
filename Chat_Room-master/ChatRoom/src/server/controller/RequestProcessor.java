@@ -1,7 +1,5 @@
 package server.controller;
 
-import client.ui.ChatFrame;
-import client.ui.GroupUsersSelectFrame;
 import common.model.entity.*;
 import server.DataBuffer;
 import server.OnlineClientIOCache;
@@ -11,10 +9,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -37,8 +31,6 @@ public class RequestProcessor implements Runnable {
             while(flag){ //不停地读取客户端发过来的请求对象
                 //从请求输入流中读取到客户端提交的请求对象
                 Request request = (Request)currentClientIOCache.getOis().readObject();
-                System.out.println("Server读取了客户端的请求:" + request.getAction());
-
                 String actionName = request.getAction();   //获取请求中的动作
                 if(actionName.equals("userRegiste")){      //用户注册
                     registe(currentClientIOCache, request);

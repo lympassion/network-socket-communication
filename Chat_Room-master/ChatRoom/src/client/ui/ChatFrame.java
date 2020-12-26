@@ -5,7 +5,6 @@ import client.DataBuffer;
 import client.model.entity.MyCellRenderer;
 import client.model.entity.OnlineUserListModel;
 import client.util.ClientUtil;
-import client.util.JFrameShaker;
 import common.model.entity.FileInfo;
 import common.model.entity.Message;
 import common.model.entity.Request;
@@ -44,7 +43,6 @@ public class ChatFrame extends JFrame{
     /** 组通信复选框 */
     public JCheckBox groupBtn;
 
-    /*
     /**组通信选人确认按钮*/
     private JButton okBtn;
 
@@ -271,46 +269,6 @@ public class ChatFrame extends JFrame{
         new ClientThread(this).start();
     }
 
-    /** 发送振动 */
-    public void sendShakeMsg(){
-        User selectedUser = (User)onlineList.getSelectedValue();
-        if(null != selectedUser){
-            if(DataBuffer.currentUser.getId() == selectedUser.getId()){
-                JOptionPane.showMessageDialog(ChatFrame.this, "不能给自己发送振动!",
-                        "不能发送", JOptionPane.ERROR_MESSAGE);
-            }else{
-                Message msg = new Message();
-                msg.setFromUser(DataBuffer.currentUser);
-                msg.setToUser(selectedUser);
-                msg.setSendTime(new Date());
-
-                DateFormat df = new SimpleDateFormat("HH:mm:ss");
-                StringBuffer sb = new StringBuffer();
-                sb.append(" ").append(msg.getFromUser().getNickname())
-                        .append("(").append(msg.getFromUser().getId()).append(") ")
-                        .append(df.format(msg.getSendTime()))
-                        .append("\n  给").append(msg.getToUser().getNickname())
-                        .append("(").append(msg.getToUser().getId()).append(") ")
-                        .append("发送了一个窗口抖动\n");
-                msg.setMessage(sb.toString());
-
-                Request request = new Request();
-                request.setAction("shake");
-                request.setAttribute("msg", msg);
-                try {
-                    ClientUtil.sendTextRequest2(request);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                ClientUtil.appendTxt2MsgListArea(msg.getMessage());
-                new JFrameShaker(ChatFrame.this).startShake();
-            }
-        }else{
-            JOptionPane.showMessageDialog(ChatFrame.this, "不能群发送振动!",
-                    "不能发送", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
     /** 发送文本消息 */
     public void sendTxtMsg(){
         String content = sendArea.getText();
@@ -345,8 +303,6 @@ public class ChatFrame extends JFrame{
                     .append("(").append(msg.getFromUser().getId()).append(") ");
             if(groupBtn.isSelected()){//群聊
                 msg.setToListUser(GroupUsersSelectFrame.groupUserSelectedList);
-//                System.out.println(msg.getToListUser().get(1));
-
                 sb.append("对大家说");
             }
             sb.append("\n  ").append(content).append("\n");
@@ -423,14 +379,8 @@ public class ChatFrame extends JFrame{
                                 + file.getName() + "]，等待对方接收...\n");
                     }
                 }
-
             }
-
         }
-//        else{
-//            JOptionPane.showMessageDialog(ChatFrame.this, "不能给所有在线用户发送文件!",
-//                    "不能发送", JOptionPane.ERROR_MESSAGE);
-//        }
     }
 
     /** 关闭客户端 */
@@ -453,5 +403,4 @@ public class ChatFrame extends JFrame{
             this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         }
     }
-
 }
